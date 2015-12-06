@@ -1,0 +1,523 @@
+@startuml
+top to bottom direction
+skinparam headerFontSize 30
+skinparam headerFontStyle bold
+skinparam classAttributeIconSize 0
+scale 1.0
+package ru.opa.pack {
+package ru.opa.pack.abstr {
+abstract class ru.opa.pack.abstr.Creature  <? extends GameObject>  {
+.. Fields  ..
+#damage : double
+-die : boolean
+#health : double
+#speed : double
+-spriteC : CreatureSprite
+-walkPath : Walk
+.. Methods ..
++damage(double) : void
++damageDown(double) : void
++damageUp(double) : void
++ {abstract} die() : void
++down() : void
++draw(Graphics) : void
++ {abstract} getDamage() : double
++ {abstract} getMaxHealth() : double
++ {abstract} getSpeed() : double
++getWalk() : Walk
++heal(double) : void
++isDie() : boolean
++left() : void
++move() : void
++right() : void
++setWalk(Walk) : void
++speedDown(double) : void
++speedUp(double) : void
++up() : void
+}
+abstract class ru.opa.pack.abstr.Terrain  {
+.. Fields  ..
+#x : int
+#y : int
+.. Methods ..
++ {abstract} add(int, int) : void
++ {abstract} append() : void
++ {abstract} draw(Graphics) : void
++spawn(int, int, Terrains[][]) : void
+}
+abstract class ru.opa.pack.abstr.Walk  {
+.. Fields  ..
+#leftRight : boolean
+#upDown : boolean
+.. Methods ..
++ {abstract} move(Creature) : void
+.. Static ..
++ {static} canMoveDown() : boolean
++ {static} canMoveLeft() : boolean
++ {static} canMoveRight() : boolean
++ {static} canMoveUp() : boolean
++ {static} canMoveX() : boolean
++ {static} canMoveY() : boolean
+}
+abstract class ru.opa.pack.abstr.SimpleTerrain  {
+.. Fields  ..
+#sprite : Sprite
+.. Methods ..
++draw(Graphics, int, int) : void
++ {abstract} getIcon() : String
+}
+abstract class ru.opa.pack.abstr.GameObject  {
+.. Fields  ..
+-sprite : Sprite
+-x : int
+-y : int
+.. Methods ..
++draw(Graphics) : void
++ {abstract} getIcon() : String
++getSprite() : Sprite
++getX() : int
++getY() : int
++isBarrierCollision(Sides) : boolean
++isCollision(GameObject) : boolean
+-isTreeCollision(GameObject) : boolean
++setX(int) : void
++setY(int) : void
+}
+
+}
+package ru.opa.pack.api {
+interface ru.opa.pack.api.Barrierable  {
+.. Methods ..
++ {abstract} underStep(GameObject) : boolean
+}
+interface ru.opa.pack.api.Monsterable  {
+.. Methods ..
++ {abstract} actorAttack(Actor) : void
+}
+interface ru.opa.pack.api.Bonusable  {
+.. Methods ..
++ {abstract} takeIt(Actor) : void
+}
+
+}
+package ru.opa.pack.barriers {
+class ru.opa.pack.barriers.Stone <? extends GameObject>  {
+.. Methods ..
++getIcon() : String
++underStep(GameObject) : boolean
+}
+class ru.opa.pack.barriers.Tree <? extends GameObject>  {
+.. Methods ..
++getIcon() : String
++underStep(GameObject) : boolean
+}
+class ru.opa.pack.barriers.Bushes <? extends GameObject>  {
+.. Methods ..
++getIcon() : String
++underStep(GameObject) : boolean
+}
+class ru.opa.pack.barriers.Pit <? extends GameObject>  {
+.. Methods ..
++getIcon() : String
++underStep(GameObject) : boolean
+}
+
+}
+package ru.opa.pack.bonuses {
+class ru.opa.pack.bonuses.Melon <? extends GameObject>  {
+.. Methods ..
++getIcon() : String
++takeIt(Actor) : void
+}
+class ru.opa.pack.bonuses.Peach <? extends GameObject>  {
+.. Methods ..
++getIcon() : String
++takeIt(Actor) : void
+}
+class ru.opa.pack.bonuses.Pear <? extends GameObject>  {
+.. Methods ..
++getIcon() : String
++takeIt(Actor) : void
+}
+class ru.opa.pack.bonuses.Berry <? extends GameObject>  {
+.. Methods ..
++getIcon() : String
++takeIt(Actor) : void
+}
+class ru.opa.pack.bonuses.Cherry <? extends GameObject>  {
+.. Methods ..
++getIcon() : String
++takeIt(Actor) : void
+}
+class ru.opa.pack.bonuses.Apple <? extends GameObject>  {
+.. Methods ..
++getIcon() : String
++takeIt(Actor) : void
+}
+class ru.opa.pack.bonuses.Banana <? extends GameObject>  {
+.. Methods ..
++getIcon() : String
++takeIt(Actor) : void
+}
+class ru.opa.pack.bonuses.Lemon <? extends GameObject>  {
+.. Methods ..
++getIcon() : String
++takeIt(Actor) : void
+}
+
+}
+package ru.opa.pack.entity {
+class ru.opa.pack.entity.CreatureSprite <? extends Sprite>  {
+.. Fields  ..
+-margins : int[]
+-stations : Image[][]
+.. Methods ..
++bottom() : void
++left() : void
++right() : void
++top() : void
+}
+class ru.opa.pack.entity.Actor <? extends Creature>  {
+.. Methods ..
++die() : void
++getDamage() : double
++getIcon() : String
++getMaxHealth() : double
++getSpeed() : double
++onBonusTake() : void
+}
+class ru.opa.pack.entity.Sprite {
+.. Fields  ..
+#image : Image
+#sourceImage : BufferedImage
+.. Methods ..
++draw(Graphics, int, int) : void
++getHeight() : int
++getRaduis() : int
++getWidth() : int
+}
+class ru.opa.pack.entity.Sound <<Runnable>>  {
+.. Fields  ..
+-path : String
+.. Methods ..
++run() : void
+}
+
+}
+package ru.opa.pack.keyboard {
+class ru.opa.pack.keyboard.KeyInputHandler {
+.. Fields  ..
+-pressed : boolean[]
+.. Methods ..
++getPressed() : int
++keyPressed(KeyEvent) : void
++keyReleased(KeyEvent) : void
+}
+
+}
+package ru.opa.pack.monsters {
+package ru.opa.pack.monsters.walks {
+class ru.opa.pack.monsters.walks.Escape <? extends Around>  {
+.. Fields  ..
+-current : long
+-ms : long
+-old : Walk
+-oldSpeed : double
+.. Methods ..
+-dist(Creature) : boolean
++move(Creature) : void
+}
+class ru.opa.pack.monsters.walks.Hold <? extends Walk>  {
+.. Methods ..
++move(Creature) : void
+}
+class ru.opa.pack.monsters.walks.HorisontalWalk <? extends Walk>  {
+.. Methods ..
++move(Creature) : void
+}
+class ru.opa.pack.monsters.walks.VerticalWalk <? extends Walk>  {
+.. Methods ..
++move(Creature) : void
+}
+class ru.opa.pack.monsters.walks.Around <? extends Walk>  {
+.. Fields  ..
+#direction : Sides
+.. Methods ..
++move(Creature) : void
+#moveLogic(Creature) : void
+}
+
+}
+class ru.opa.pack.monsters.Bull <? extends Creature>  {
+.. Methods ..
++actorAttack(Actor) : void
++die() : void
++getDamage() : double
++getIcon() : String
++getMaxHealth() : double
++getSpeed() : double
+}
+class ru.opa.pack.monsters.Opossum <? extends Rat>  {
+.. Methods ..
++getDamage() : double
++getIcon() : String
++getSpeed() : double
+}
+class ru.opa.pack.monsters.Rat <? extends Creature>  {
+.. Methods ..
++actorAttack(Actor) : void
++die() : void
++getDamage() : double
++getIcon() : String
++getMaxHealth() : double
++getSpeed() : double
+}
+
+}
+package ru.opa.pack.terrain {
+package ru.opa.pack.terrain.simple {
+class ru.opa.pack.terrain.simple.Grout <? extends SimpleTerrain>  {
+.. Methods ..
++getIcon() : String
+}
+class ru.opa.pack.terrain.simple.Sand64 <? extends SimpleTerrain>  {
+.. Methods ..
++getIcon() : String
+}
+class ru.opa.pack.terrain.simple.Sand32 <? extends SimpleTerrain>  {
+.. Methods ..
++getIcon() : String
+}
+class ru.opa.pack.terrain.simple.StepedEarth <? extends SimpleTerrain>  {
+.. Methods ..
++getIcon() : String
+}
+class ru.opa.pack.terrain.simple.Start <? extends SimpleTerrain>  {
+.. Methods ..
++getIcon() : String
+}
+class ru.opa.pack.terrain.simple.Flower <? extends SimpleTerrain>  {
+.. Methods ..
++getIcon() : String
+}
+class ru.opa.pack.terrain.simple.Earth <? extends SimpleTerrain>  {
+.. Methods ..
++getIcon() : String
+}
+class ru.opa.pack.terrain.simple.FlowerTerrain <? extends SimpleTerrain>  {
+.. Methods ..
++getIcon() : String
+}
+
+}
+class ru.opa.pack.terrain.Labyrinth <? extends Terrain>  {
+.. Fields  ..
+-array : Terrains[][]
+-flower : Flower
+-grout : Grout
+-sE : StepedEarth
+-sand : Sand64
+.. Methods ..
++add(int, int) : void
++append() : void
++draw(Graphics) : void
+}
+class ru.opa.pack.terrain.CircleOfPits <? extends Terrain>  {
+.. Fields  ..
+-array : Terrains[][]
+-sE : StepedEarth
+.. Methods ..
++add(int, int) : void
++append() : void
++draw(Graphics) : void
+}
+class ru.opa.pack.terrain.MainTerrain {
+.. Fields  ..
+-field : int[][]
+-flower : FlowerTerrain
+-grout : Grout
+-large : Terrain
+-medium : Terrain
+-small : Terrain
+-steped : StepedEarth
+-terrain : SimpleTerrain
+.. Methods ..
++draw(Graphics) : void
++init() : void
+-randomize() : void
+.. Static ..
++ {static} HEIGHT : int
++ {static} HOR : int
++ {static} VER : int
++ {static} WIDTH : int
+}
+class ru.opa.pack.terrain.Cube <? extends Terrain>  {
+.. Fields  ..
+-array : Terrains[][]
+-sE : StepedEarth
+-sand : Sand64
+.. Methods ..
++add(int, int) : void
++append() : void
++draw(Graphics) : void
+}
+
+}
+package ru.opa.pack.util {
+class ru.opa.pack.util.SoundHelper {
+.. Methods ..
+.. Static ..
++ {static} Play() : void
+}
+enum ru.opa.pack.util.Terrains  {
+.. Fields  ..
+.. Methods ..
+.. Static ..
++ {static} bushes : Terrains
++ {static} grout : Terrains
++ {static} none : Terrains
++ {static} pit : Terrains
++ {static} sand64 : Terrains
++ {static} steped : Terrains
++ {static} stone : Terrains
++ {static} valueOf() : Terrains
++ {static} values() : Terrains[]
+}
+class ru.opa.pack.util.Randomize {
+.. Fields  ..
+.. Methods ..
+.. Static ..
+# {static} Bonuses : List
+# {static} LargeTerrains : List
+# {static} MediumTerrains : List
+# {static} Monsters : List
+# {static} SmallTerrains : List
++ {static} randomizeBonus() : Bonusable
++ {static} randomizeMonster() : Creature
++ {static} randomizeTerrain() : Terrain
++ {static} registerBonus() : void
++ {static} registerMonster() : void
++ {static} registerTerrainClass() : void
+- {static} r : Random
+}
+enum ru.opa.pack.util.Sides  {
+.. Fields  ..
+.. Methods ..
+.. Static ..
++ {static} down : Sides
++ {static} left : Sides
++ {static} right : Sides
++ {static} up : Sides
++ {static} valueOf() : Sides
++ {static} values() : Sides[]
+}
+
+}
+class ru.opa.pack.Game <<Runnable>>  {
+.. Fields  ..
++keyHandler : KeyInputHandler
+-running : boolean
++terrain : MainTerrain
+.. Methods ..
++init() : void
+-registerBonuses() : void
+-registerMonsters() : void
+-registerTerrains() : void
++render() : void
++run() : void
+-spawnBarriers() : void
++start() : void
++update(long) : void
+.. Static ..
++ {static} HEIGHT : int
++ {static} NAME : String
++ {static} WIDTH : int
++ {static} a : Actor
++ {static} barriers : List
++ {static} bonuses : List
++ {static} creatures : List
++ {static} main() : void
++ {static} toDie : List
++ {static} trees : List
+- {static} serialVersionUID : long
+}
+
+}
+ru.opa.pack.entity.Sprite <|-- ru.opa.pack.entity.CreatureSprite
+ru.opa.pack.abstr.GameObject <|-- ru.opa.pack.bonuses.Melon
+ru.opa.pack.api.Bonusable <|.. ru.opa.pack.bonuses.Melon
+ru.opa.pack.abstr.GameObject <|-- ru.opa.pack.barriers.Stone
+ru.opa.pack.api.Barrierable <|.. ru.opa.pack.barriers.Stone
+ru.opa.pack.abstr.GameObject <|-- ru.opa.pack.bonuses.Peach
+ru.opa.pack.api.Bonusable <|.. ru.opa.pack.bonuses.Peach
+ru.opa.pack.abstr.Terrain <|-- ru.opa.pack.terrain.Labyrinth
+ru.opa.pack.terrain.Labyrinth o-- "1..1" ru.opa.pack.terrain.simple.StepedEarth
+ru.opa.pack.terrain.Labyrinth o-- "1..1" ru.opa.pack.terrain.simple.Sand64
+ru.opa.pack.terrain.Labyrinth o-- "1..1" ru.opa.pack.terrain.simple.Grout
+ru.opa.pack.terrain.Labyrinth o-- "1..1" ru.opa.pack.terrain.simple.Flower
+ru.opa.pack.terrain.Labyrinth *-- "0..*" ru.opa.pack.util.Terrains
+ru.opa.pack.abstr.SimpleTerrain <|-- ru.opa.pack.terrain.simple.Grout
+ru.opa.pack.abstr.SimpleTerrain <|-- ru.opa.pack.terrain.simple.Sand64
+ru.opa.pack.abstr.SimpleTerrain <|-- ru.opa.pack.terrain.simple.Sand32
+ru.opa.pack.monsters.walks.Around <|-- ru.opa.pack.monsters.walks.Escape
+ru.opa.pack.monsters.walks.Escape o-- "1..1" ru.opa.pack.abstr.Walk
+ru.opa.pack.abstr.Creature <|-- ru.opa.pack.monsters.Bull
+ru.opa.pack.api.Monsterable <|.. ru.opa.pack.monsters.Bull
+ru.opa.pack.abstr.Walk <|-- ru.opa.pack.monsters.walks.Hold
+ru.opa.pack.abstr.GameObject <|-- ru.opa.pack.bonuses.Pear
+ru.opa.pack.api.Bonusable <|.. ru.opa.pack.bonuses.Pear
+ru.opa.pack.abstr.GameObject <|-- ru.opa.pack.bonuses.Berry
+ru.opa.pack.api.Bonusable <|.. ru.opa.pack.bonuses.Berry
+ru.opa.pack.abstr.Walk <|-- ru.opa.pack.monsters.walks.HorisontalWalk
+ru.opa.pack.abstr.SimpleTerrain <|-- ru.opa.pack.terrain.simple.StepedEarth
+ru.opa.pack.abstr.Walk <|-- ru.opa.pack.monsters.walks.VerticalWalk
+ru.opa.pack.abstr.GameObject <|-- ru.opa.pack.abstr.Creature
+ru.opa.pack.abstr.Creature o-- "1..1" ru.opa.pack.entity.CreatureSprite
+ru.opa.pack.abstr.Creature o-- "1..1" ru.opa.pack.abstr.Walk
+ru.opa.pack.abstr.GameObject <|-- ru.opa.pack.bonuses.Cherry
+ru.opa.pack.api.Bonusable <|.. ru.opa.pack.bonuses.Cherry
+ru.opa.pack.abstr.Terrain <|-- ru.opa.pack.terrain.CircleOfPits
+ru.opa.pack.terrain.CircleOfPits o-- "1..1" ru.opa.pack.terrain.simple.StepedEarth
+ru.opa.pack.terrain.CircleOfPits *-- "0..*" ru.opa.pack.util.Terrains
+ru.opa.pack.terrain.MainTerrain o-- "1..1" ru.opa.pack.abstr.SimpleTerrain
+ru.opa.pack.terrain.MainTerrain o-- "1..1" ru.opa.pack.terrain.simple.Grout
+ru.opa.pack.terrain.MainTerrain o-- "1..1" ru.opa.pack.terrain.simple.FlowerTerrain
+ru.opa.pack.terrain.MainTerrain o-- "1..1" ru.opa.pack.terrain.simple.StepedEarth
+ru.opa.pack.abstr.SimpleTerrain <|-- ru.opa.pack.terrain.simple.Start
+ru.opa.pack.abstr.GameObject <|-- ru.opa.pack.bonuses.Apple
+ru.opa.pack.api.Bonusable <|.. ru.opa.pack.bonuses.Apple
+ru.opa.pack.abstr.Creature <|-- ru.opa.pack.entity.Actor
+ru.opa.pack.abstr.Terrain <|-- ru.opa.pack.terrain.Cube
+ru.opa.pack.terrain.Cube o-- "1..1" ru.opa.pack.terrain.simple.StepedEarth
+ru.opa.pack.terrain.Cube o-- "1..1" ru.opa.pack.terrain.simple.Sand64
+ru.opa.pack.terrain.Cube *-- "0..*" ru.opa.pack.util.Terrains
+ru.opa.pack.abstr.GameObject <|-- ru.opa.pack.barriers.Tree
+ru.opa.pack.api.Barrierable <|.. ru.opa.pack.barriers.Tree
+ru.opa.pack.Game o-- "1..1" ru.opa.pack.terrain.MainTerrain
+ru.opa.pack.Game o-- "1..1" ru.opa.pack.keyboard.KeyInputHandler
+ru.opa.pack.Game *-- "0..*" ru.opa.pack.api.Bonusable
+ru.opa.pack.Game o-- "1..1" ru.opa.pack.entity.Actor
+ru.opa.pack.abstr.GameObject <|-- ru.opa.pack.barriers.Bushes
+ru.opa.pack.api.Barrierable <|.. ru.opa.pack.barriers.Bushes
+ru.opa.pack.abstr.SimpleTerrain <|-- ru.opa.pack.terrain.simple.Flower
+ru.opa.pack.monsters.Rat <|-- ru.opa.pack.monsters.Opossum
+ru.opa.pack.abstr.SimpleTerrain <|-- ru.opa.pack.terrain.simple.Earth
+ru.opa.pack.abstr.SimpleTerrain o-- "1..1" ru.opa.pack.entity.Sprite
+ru.opa.pack.util.Randomize *-- "0..*" ru.opa.pack.api.Bonusable
+ru.opa.pack.util.Randomize *-- "0..*" ru.opa.pack.abstr.Creature
+ru.opa.pack.abstr.Creature <|-- ru.opa.pack.monsters.Rat
+ru.opa.pack.api.Monsterable <|.. ru.opa.pack.monsters.Rat
+ru.opa.pack.abstr.GameObject o-- "1..1" ru.opa.pack.entity.Sprite
+ru.opa.pack.abstr.GameObject <|-- ru.opa.pack.bonuses.Banana
+ru.opa.pack.api.Bonusable <|.. ru.opa.pack.bonuses.Banana
+ru.opa.pack.abstr.GameObject <|-- ru.opa.pack.bonuses.Lemon
+ru.opa.pack.api.Bonusable <|.. ru.opa.pack.bonuses.Lemon
+ru.opa.pack.abstr.SimpleTerrain <|-- ru.opa.pack.terrain.simple.FlowerTerrain
+ru.opa.pack.abstr.Walk <|-- ru.opa.pack.monsters.walks.Around
+ru.opa.pack.abstr.GameObject <|-- ru.opa.pack.barriers.Pit
+ru.opa.pack.api.Barrierable <|.. ru.opa.pack.barriers.Pit
+ru.opa.pack.terrain.MainTerrain o-- "3..3" ru.opa.pack.abstr.Terrain
+ru.opa.pack.Game *-- "0..*(2)" ru.opa.pack.abstr.Creature
+ru.opa.pack.Game *-- "0..*(2)" ru.opa.pack.api.Barrierable
+ru.opa.pack.util.Randomize *-- "0..*(3)" ru.opa.pack.abstr.Terrain
+@enduml
